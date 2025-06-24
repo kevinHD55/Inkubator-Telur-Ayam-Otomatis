@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Tentang Inkubator Telur Ayam</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Sama seperti dashboard */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f7f7f7;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      font-size: 18px;
+    }
+
+    .sidebar {
+      width: 80px;
+      background: #ffc107;
+      color: #5d4037;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      justify-content: space-between; /* Ganti center jadi space-between */
+      height: 100vh;
+      height: 100%; /* tetap supaya memenuhi tinggi sidebar */
+      padding: 20px 0; /* optional agar ada space atas bawah */
+      gap: 0; /* hapus gap supaya jarak antar elemen dikontrol space-between */
+    }
+
+    .sidebar .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      justify-content: center; /* Bisa juga space-around atau space-evenly */
+      flex-grow: 1;
+      z-index: 2;
+      height: 100%; /* pastikan memenuhi tinggi sidebar */
+    }
+
+    .sidebar .menu a {
+      color: #5d4037;
+      font-size: 24px;
+      text-decoration: none;
+      transition: transform 0.2s, color 0.2s;
+    }
+
+    .menu-icon {
+      width: 60px;
+      height: 60px;
+      transition: transform 0.2s;
+    }
+
+    .sidebar .menu a:hover .menu-icon {
+      transform: scale(1.2);
+    }
+
+    .sidebar .menu a.active .menu-icon,
+    .sidebar .menu a.active .logo {
+      transform: scale(1.2); /* Tetap timbul */
+    }
+
+    .sidebar .menu a.active {
+      color: #3e2723; /* Warna teks lebih gelap */
+      font-weight: 600; /* Lebih tebal */
+    }
+
+    .menu-tentang {
+      margin-top: 0px;
+    }
+
+
+    .sidebar a.logo-link {
+      display: flex;
+      justify-content: center;
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+      transition: transform 0.2s;
+    }
+
+    .logo:hover {
+      transform: scale(1.1);
+    }
+
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .topbar {
+      height: 50px;
+      background: #ffe082;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 25px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .topbar .user {
+      position: relative;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      background-color: #ffe082;
+      padding: 8px 12px;
+      border-radius: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .profile:hover {
+      background-color: #ffd54f;
+    }
+
+    .profile span {
+      font-size: 16px;
+    }
+
+    .profile img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+    }
+
+    .dropdown {
+      display: block;
+      position: absolute;
+      top: 48px;
+      right: 0;
+      background: #fff8e1;
+      border: 1px solid #ffc107;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      padding: 8px;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .dropdown.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .dropdown button {
+      width: 100%;
+      padding: 10px 12px;
+      background: #d84315;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .dropdown button:hover {
+      background: #bf360c;
+    }
+
+    .content {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      max-width: 1200px; /* Contoh: diperlebar jadi 1200px */
+      margin: 0 auto;
+    }
+
+    .card h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #6d4c41;
+    }
+
+    .card p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #4e342e;
+    }
+
+    @media (min-width: 1601px) and (max-width: 1920px) {
+  .content {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto;
+  }
+}
+
+@media (min-width: 1921px) {
+  .content {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto;
+    gap: 20px;
+    padding: 30px 40px;
+  }
+
+  .card h3 {
+    font-size: 24px;
+  }
+
+  .countdown {
+    font-size: 42px;
+    letter-spacing: 24px;
+    margin: 100px 0;
+  }
+
+  .status-box {
+    font-size: 18px;
+  }
+
+  .status-box span {
+    font-size: 26px;
+  }
+
+  input[type="number"],
+  button {
+    font-size: 18px;
+    padding: 16px;
+  }
+}
+  </style>
+</head>
+<body>
+  <script>
+    if (localStorage.getItem("loggedIn") !== "true") {
+      window.location.href = "login1.html";
+    }
+  </script>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="menu" id="menuContainer">
+      <a href="tentang1.html" class="menu-tentang" title="Tentang" id="menu-tentang">
+        <img src="tentang.png" alt="Tentang" class="menu-icon">
+      </a>
+  
+      <!-- Posisikan logo dulu -->
+      <a href="dashboard1.html" class="logo-link" title="Dashboard" id="menuLogo">
+        <img src="logo.png" class="logo" alt="Logo">
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="main">
+    <div class="topbar">
+      <div class="user">
+        <div class="profile" onclick="toggleDropdown()">
+          <img src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png" alt="User">
+          <span>admin</span>
+        </div>
+        <div class="dropdown" id="dropdownMenu">
+          <button onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="card">
+        <h1>Tentang Inkubator Telur Ayam Otomatis</h1>
+        <p>
+            Inkubator telur ayam otomatis ini dirancang khusus untuk **meniru kondisi alami pengeraman induk ayam, memastikan telur berkembang optimal hingga menetas. Dengan teknologi canggih dan sistem kontrol presisi, inkubator ini menjadi solusi ideal bagi peternak yang ingin meningkatkan efisiensi penetasan dan menjaga kualitas telur.
+        </p>
+    
+        <h2>Mengapa Inkubator Otomatis?</h2>
+        <p>
+            Proses inkubasi telur memerlukan lingkungan yang stabil dan terkontrol. Inkubator otomatis kami mengatasi tantangan ini dengan:
+        </p>
+        <ul>
+            <li>✅ Stabilitas Lingkungan: Mempertahankan suhu dan kelembaban pada tingkat optimal secara konsisten.</li>
+            <li>🔄 Pemerataan Panas: Mencegah titik panas atau dingin yang bisa merusak embrio.</li>
+            <li>⏲️ Efisiensi Waktu: Mengurangi kebutuhan intervensi manual, sehingga peternak bisa fokus pada tugas lain.</li>
+            <li>📈 Peningkatan Angka Penetasan: Kondisi ideal yang terjaga meningkatkan peluang keberhasilan penetasan telur.</li>
+        </ul>
+    
+        <h2>Komponen Utama dan Fungsinya</h2>
+        <p>
+            Sistem inkubator ini terintegrasi dengan beberapa komponen kunci, masing-masing dengan peran vital dalam menjaga kondisi inkubasi:
+        </p>
+        <ul>
+            <li>🌡️ Sensor Suhu & Kelembaban (DHT11/DHT22): Memantau kondisi internal inkubator secara *real-time*. Data ini menjadi dasar untuk semua kontrol otomatis.</li>
+            <li>🔥 Heater (Pemanas): Bertanggung jawab untuk menaikkan dan menjaga suhu internal sesuai target. Dijalankan dengan kontrol PWM untuk regulasi panas yang halus dan akurat.</li>
+            <li>💧 Mist Maker (Pembuat Kabut/Pelembab): Menghasilkan uap air untuk menjaga tingkat kelembaban yang optimal di dalam inkubator, krusial untuk perkembangan embrio.</li>
+            <li>⚙️ Motor Rak Telur (Servo/Stepper Motor): Menggerakkan rak telur secara berkala untuk memutar telur (umumnya 45 derajat ke kedua sisi). Proses pemutaran ini sangat penting untuk mencegah embrio menempel pada cangkang dan memastikan perkembangan yang merata.</li>
+            <li>🌬️ Motor Ventilasi (Servo Motor): Mengatur bukaan ventilasi untuk mengontrol aliran udara dan pertukaran oksigen, membantu mengeluarkan karbon dioksida berlebih dan memasukkan udara segar.</li>
+            <li>🧠 Mikrokontroler (ESP32/Arduino): Sebagai "otak" sistem, mengumpulkan data sensor, menjalankan algoritma kontrol (PID, logika if-else, dll.), dan mengelola komunikasi web.</li>
+        </ul>
+    
+        <h2>Fitur Unggulan Aplikasi Web Ini</h2>
+        <p>
+            Antarmuka web yang intuitif ini dirancang untuk memberikan kendali penuh dan informasi akurat di genggaman Anda:
+        </p>
+        <ul>
+            <li>⏱️ Countdown Hari Inkubasi: Memantau sisa hari hingga penetasan, memberikan estimasi waktu yang jelas.</li>
+            <li>📊 Monitoring Data *Real-time*: Lihat suhu, kelembaban, posisi rak, dan sudut ventilasi secara langsung.</li>
+            <li>📈 Grafik Data Historis: Analisis tren suhu, kelembaban, dan pergerakan aktuator selama siklus inkubasi.</li>
+            <li>⚙️ Mode Kontrol Otomatis & Manual: Pilih antara mode otomatis (sistem mengontrol sendiri) atau mode manual untuk mengambil alih kendali penuh.</li>
+            <li>🔒 Sistem Login Admin: Menjaga keamanan akses ke pengaturan dan kontrol inkubator.</li>
+            <li>📱 Akses Fleksibel: Dapat diakses dari berbagai perangkat melalui browser web.</li>
+        </ul>
+    </div>
+
+  <script>
+    function logout() {
+      localStorage.removeItem("loggedIn");
+      window.location.href = "login1.html";
+    }
+
+    function toggleDropdown() {
+      const dropdown = document.getElementById("dropdownMenu");
+      dropdown.classList.toggle("show");
+    }
+
+    window.addEventListener("click", function(e) {
+      const profile = document.querySelector(".profile");
+      const dropdown = document.getElementById("dropdownMenu");
+      if (!profile.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.classList.remove("show");
+      }
+    });
+
+    // Fungsi untuk menandai menu aktif
+    function setMenuActive() {
+        // Dapatkan path nama file dari URL saat ini (misal: "dashboard1.html")
+        const currentPath = window.location.pathname.split('/').pop();
+
+        // Dapatkan semua tautan menu di sidebar
+        const menuLinks = document.querySelectorAll('.sidebar .menu a');
+
+        menuLinks.forEach(link => {
+            // Hapus kelas 'active' dari semua tautan terlebih dahulu
+            link.classList.remove('active');
+
+            // Dapatkan path nama file dari atribut href tautan
+            const linkPath = link.getAttribute('href');
+
+            // Jika path tautan cocok dengan path halaman saat ini, tambahkan kelas 'active'
+            if (linkPath === currentPath) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+// Panggil fungsi ini saat halaman dimuat
+document.addEventListener('DOMContentLoaded', setMenuActive);
+  </script>
+</body>
+</html>

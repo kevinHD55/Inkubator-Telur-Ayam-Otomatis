@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Inkubator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Poppins', sans-serif;
+     background: linear-gradient(to bottom right, #ffe082, #fff3e0);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background: #fffdf5;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-container h2 {
+      margin-bottom: 25px;
+      color: #6d4c41;
+    }
+
+    .form-group {
+      position: relative;
+      margin: 10px 0;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 12px 40px 12px 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #666;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #ffb300; 
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #ffa000;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .chick-icon {
+      width: 100px;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <img src="logo.png" class="chick-icon" alt="logo">
+    <h2>Login Inkubator</h2>
+    <form onsubmit="handleSubmit(event)">
+      <div class="form-group">
+        <input type="text" id="username" placeholder="Username" required>
+      </div>
+      <div class="form-group">
+        <input type="password" id="password" placeholder="Password" required>
+        <i class="fas fa-eye toggle-password" id="toggleIcon" onclick="togglePassword()"></i>
+      </div>
+      <button type="submit">Masuk</button>
+      <p class="error" id="errorMsg">Username atau password salah</p>
+    </form>
+  </div>
+
+  <script>
+    function handleSubmit(event) {
+      event.preventDefault();
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      const error = document.getElementById("errorMsg");
+
+      if (user === "admin" && pass === "admin123") {
+        localStorage.setItem("loggedIn", "true");
+        window.location.href = "dashboard1.html";
+      } else {
+        error.style.display = "block";
+      }
+    }
+
+    function togglePassword() {
+      const passwordInput = document.getElementById("password");
+      const toggleIcon = document.getElementById("toggleIcon");
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleIcon.classList.remove("fa-eye");
+        toggleIcon.classList.add("fa-eye-slash");
+      } else {
+        passwordInput.type = "password";
+        toggleIcon.classList.remove("fa-eye-slash");
+        toggleIcon.classList.add("fa-eye");
+      }
+    }
+  </script>
+</body>
+</html>

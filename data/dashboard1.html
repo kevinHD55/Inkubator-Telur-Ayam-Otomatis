@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard Inkubator Telur Ayam</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f7f7f7;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      font-size: 18px;
+    }
+
+    .sidebar {
+      width: 80px;
+      background: #ffc107;
+      color: #5d4037;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      justify-content: space-between;
+      height: 100vh;
+      height: 100%;
+      padding: 20px 0;
+      gap: 0;
+    }
+
+    .sidebar .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      justify-content: center;
+      flex-grow: 1;
+      z-index: 2;
+      height: 100%;
+    }
+
+    .sidebar .menu a {
+      color: #5d4037;
+      font-size: 24px;
+      text-decoration: none;
+      transition: transform 0.2s, color 0.2s;
+    }
+
+    .menu-icon {
+      width: 60px;
+      height: 60px;
+      transition: transform 0.2s;
+    }
+
+    .sidebar .menu a:hover .menu-icon {
+      transform: scale(1.2);
+    }
+
+    .sidebar .menu a.active .menu-icon,
+    .sidebar .menu a.active .logo,
+    .sidebar .menu a.logo-link.active .logo {
+      transform: scale(1.2); /* Tetap timbul */
+    }
+
+    .sidebar .menu a.active {
+      color: #3e2723; /* Warna teks lebih gelap */
+      font-weight: 600; /* Lebih tebal */
+    }
+
+    .menu-tentang {
+      margin-top: 0px;
+    }
+
+
+    .sidebar a.logo-link {
+      display: flex;
+      justify-content: center;
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+      transition: transform 0.2s;
+    }
+
+    .logo:hover {
+      transform: scale(1.1);
+    }
+
+
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .topbar {
+      height: 60px;
+      background: #ffe082;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 25px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .topbar .user {
+      position: relative;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      background-color: #ffe082;
+      padding: 8px 12px;
+      border-radius: 20px;
+      transition: background-color 0.3s ease;
+    }
+
+    .profile:hover {
+      background-color: #ffd54f;
+    }
+
+    .profile span {
+      font-size: 16px;
+    }
+
+    .profile img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+    }
+
+    .dropdown {
+      display: block;
+      position: absolute;
+      top: 48px;
+      right: 0;
+      background: #fff8e1;
+      border: 1px solid #ffc107;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      padding: 8px;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .dropdown.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .dropdown button {
+      width: 100%;
+      padding: 10px 12px;
+      background: #d84315;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .dropdown button:hover {
+      background: #bf360c;
+    }
+
+    .content {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1.2fr;
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .card h3 {
+      font-size: 20px;
+      margin-bottom: 5px;
+      color: #6d4c41;
+    }
+
+    .countdown {
+      font-size: 36px;
+      font-weight: 600;
+      text-align: center;
+      color: #4e342e;
+      letter-spacing: 20px;
+      margin-top: 85px;
+      margin-bottom: 85px;
+    }
+
+    .status-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    .status-box {
+      background: #fff8e1;
+      padding: 14px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 16px;
+      color: #6d4c41;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .status-box span {
+      display: block;
+      font-size: 22px;
+      color: #e65100;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #ffb300;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover { background: #ffa000; }
+
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    hr {
+      border: 0;
+      border-top: 1px solid #eee;
+      margin: 10px 0;
+    }
+
+    .indicator-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background-color: #ccc; 
+      margin: 8px auto 0; 
+      transition: background-color 0.3s ease;
+      border: 1px solid rgba(0, 0, 0, 0.1); 
+    }
+
+    .indicator-dot.on {
+      background-color: #4CAF50; 
+      box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+    }
+
+    .indicator-dot.off {
+      background-color: #f44336; 
+      box-shadow: 0 0 8px rgba(244, 67, 54, 0.6); 
+    }
+
+    .status-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .status-box span {
+      margin-bottom: 5px;
+    }
+
+@media (min-width: 1601px) and (max-width: 1920px) {
+  .content {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto;
+  }
+  .status-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1921px) {
+  .content {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto;
+    gap: 20px;
+    padding: 30px 40px;
+  }
+
+  .card h3 {
+    font-size: 24px;
+  }
+
+  .countdown {
+    font-size: 42px;
+    letter-spacing: 24px;
+    margin: 100px 0;
+  }
+
+  .status-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .status-box {
+    font-size: 18px;
+  }
+
+  .status-box span {
+    font-size: 26px;
+  }
+
+  input[type="number"],
+  button {
+    font-size: 18px;
+    padding: 16px;
+  }
+}
+
+#toggleRackButton {
+      background-color: #007bff; /* Warna biru untuk identifikasi */
+    }
+
+    #toggleRackButton:hover {
+      background-color: #0056b3;
+    }
+
+    #toggleRackButton:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+  </style>
+</head>
+<body>
+  <script>
+    if (localStorage.getItem("loggedIn") !== "true") {
+      window.location.href = "login1.html";
+    }
+  </script>
+
+  <div class="sidebar">
+    <div class="menu" id="menuContainer">
+      <a href="tentang1.html" class="menu-tentang" title="Tentang" id="menu-tentang">
+        <img src="tentang.png" alt="Tentang" class="menu-icon" />
+      </a>
+
+      <a href="dashboard1.html" title="Dashboard" id="menuLogo">
+        <img src="logo.png" class="logo" alt="Logo" />
+      </a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="user">
+        <div class="profile" onclick="toggleDropdown()">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png"
+            alt="User"
+          />
+          <span>admin</span>
+        </div>
+        <div class="dropdown" id="dropdownMenu">
+          <button onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="card" style="grid-column: 1 / -1;">
+        <h3>⏳ Countdown Inkubasi</h3>
+        <div class="countdown" id="countdown">-- : -- : -- : --</div>
+      </div>
+
+      <div class="card">
+        <h3>📈 Monitoring</h3>
+        <div class="status-grid">
+          <div class="status-box">
+            🌡️ Suhu<span id="suhu">-- °C</span>
+            <div class="indicator-dot" id="heaterIndicator"></div>
+          </div>
+          <div class="status-box">
+            💧 Kelembaban<span id="hum">-- %</span>
+            <div class="indicator-dot" id="mistMakerIndicator"></div>
+          </div>
+          <div class="status-box">
+            📅 Hari Inkubasi<span id="hari">--</span>
+          </div>
+          <div class="status-box">
+            🔄 Kondisi Rak<span id="sudutRak">--</span>
+            <div class="indicator-dot" id="rackMotorIndicator"></div>
+          </div>
+          <div class="status-box">
+            🌬️ Ventilasi<span id="sudutVentilasi">-- °</span>
+          </div>
+          <div class="status-box">
+            🔥 PWM Heater<span id="pwmHeater">-- %</span>
+          </div>
+          </div>
+      </div>
+
+      <div class="card">
+        <h3>⚙️ Atur & Kontrol</h3>
+        <input
+          type="number"
+          id="hariInput"
+          min="1"
+          max="21"
+          placeholder="Masukkan hari (1-21)"
+        />
+        <button id="setHariButton" onclick="setHariInkubasi()">Start Inkubasi</button>
+        <button id="stopInkubasiButton" onclick="stopInkubasi()">Stop Inkubasi</button>
+        <hr /> <button id="toggleRackButton" onclick="toggleRackManual()">Putar Rak Telur Manual</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+    let countdownInterval = null;
+    let isInkubasiActive = false; 
+    const maxDay = 21; 
+    let incubationStartDate = null;
+    
+    const setHariButton = document.getElementById("setHariButton");
+    const stopInkubasiButton = document.getElementById("stopInkubasiButton");
+    const hariInput = document.getElementById("hariInput");
+    const toggleRackButton = document.getElementById("toggleRackButton");
+    let isAutoMode = true; 
+    
+    
+    let lastRtcTime = 0; 
+    let browserTimeAtLastRtcRead = 0; 
+    
+
+    function logout() {
+        localStorage.removeItem("loggedIn");
+        window.location.href = "login1.html";
+    }
+
+    function toggleDropdown() {
+        const dropdown = document.getElementById("dropdownMenu");
+        dropdown.classList.toggle("show");
+    }
+
+    window.addEventListener("click", function (e) {
+        const profile = document.querySelector(".profile");
+        const dropdown = document.getElementById("dropdownMenu");
+        if (!profile.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.remove("show");
+        }
+    });
+
+    function animateUpdate(id, value) {
+        const el = document.getElementById(id);
+        if (el) {
+            if (el.textContent !== value) {
+                el.textContent = value;
+                el.style.transform = "scale(1.1)";
+                setTimeout(() => {
+                    el.style.transform = "scale(1)";
+                }, 200);
+            }
+        }
+    }
+
+    async function updateData() {
+        try {
+            const res = await fetch("/data");
+            if (!res.ok) throw new Error("HTTP error " + res.status);
+            const data = await res.json();
+
+            animateUpdate("suhu", data.temp + " °C");
+            animateUpdate("hum", data.hum + " %");
+            animateUpdate("hari", data.day);
+            animateUpdate("sudutRak", data.sudutRak + " ");
+            animateUpdate("sudutVentilasi", data.sudutVentilasi + " °");
+            animateUpdate("pwmHeater", (data.pwmHeater).toFixed(0) + " %"); 
+
+            function updateIndicator(elementId, isOn) {
+                const indicator = document.getElementById(elementId);
+                if (indicator) {
+                    indicator.classList.remove('on', 'off');
+                    if (isOn) {
+                        indicator.classList.add('on');
+                    } else {
+                        indicator.classList.add('off');
+                    }
+                }
+            }
+
+            updateIndicator("heaterIndicator", data.isHeaterOn);
+            updateIndicator("mistMakerIndicator", data.isMistMakerOn);
+            updateIndicator("rackMotorIndicator", data.isRackMotorMoving);
+
+            
+            isInkubasiActive = data.isIncubationStarted; 
+            if (data.startDate && typeof data.startDate === 'string' && data.startDate.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                const newStartDate = new Date(data.startDate);
+              
+                if (!incubationStartDate || newStartDate.getTime() !== incubationStartDate.getTime() || countdownInterval === null) {
+                    incubationStartDate = newStartDate;
+                    startCountdown(data.day); 
+                }
+            } else {
+                
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+                document.getElementById("countdown").textContent = "-- : -- : -- : --";
+                incubationStartDate = null;
+            }
+
+            if (isInkubasiActive) {
+                setHariButton.disabled = true; // Nonaktifkan tombol "Start Inkubasi"
+                hariInput.disabled = true; // Nonaktifkan input hari
+                stopInkubasiButton.disabled = false; // Aktifkan tombol "Stop Inkubasi"
+            } else {
+                setHariButton.disabled = false; // Aktifkan tombol "Start Inkubasi"
+                hariInput.disabled = false; // Aktifkan input hari
+                stopInkubasiButton.disabled = true; // Nonaktifkan tombol "Stop Inkubasi"
+            }
+
+            if (!isInkubasiActive) { // Jika inkubasi TIDAK aktif
+                toggleRackButton.disabled = false; // Aktifkan tombol
+                toggleRackButton.textContent = "Putar Rak Telur Manual"; // Kembalikan teks normal
+            } else { // Jika inkubasi sedang aktif
+                toggleRackButton.disabled = true; // Nonaktifkan tombol
+                toggleRackButton.textContent = "Putar Rak Telur Manual (Nonaktif saat Inkubasi)"; // Teks baru yang lebih jelas
+            }
+        } catch (err) {
+            console.error("Gagal mengambil data:", err);
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+            document.getElementById("countdown").textContent = "-- : -- : -- : --";
+            incubationStartDate = null;
+
+            setHariButton.disabled = false;
+            hariInput.disabled = false;
+            stopInkubasiButton.disabled = true;
+            toggleRackButton.disabled = true;
+            toggleRackButton.textContent = "Putar Rak Telur Manual (Mode Otomatis)";
+        }
+    }
+
+    async function setHariInkubasi() {
+        const hari = parseInt(document.getElementById("hariInput").value);
+        if (isNaN(hari) || hari < 1 || hari > maxDay) {
+            alert("Masukkan hari antara 1 sampai " + maxDay);
+            return;
+        }
+
+        try {
+            const res = await fetch("/setday", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ day: hari }),
+            });
+            if (!res.ok) throw new Error("Gagal mengatur hari inkubasi.");
+
+            const data = await res.json();
+            alert(data.message || "Hari inkubasi berhasil diatur.");
+            await updateData(); 
+        } catch (err) {
+            alert("Gagal mengirim data: " + err);
+            setHariButton.disabled = false;
+            hariInput.disabled = false;
+        }
+    }
+
+    async function stopInkubasi() {
+        if (!confirm("Apakah Anda yakin ingin menghentikan inkubasi? Semua proses akan dihentikan dan data hari inkubasi akan direset.")) {
+            return;
+        }
+        try {
+            const res = await fetch("/stop", { method: "POST" });
+            if (!res.ok) throw new Error("Gagal menghentikan inkubasi");
+
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+            document.getElementById("countdown").textContent = "-- : -- : -- : --";
+            incubationStartDate = null; 
+
+            updateData(); 
+            alert("Inkubasi dihentikan.");
+        } catch (err) {
+            alert(err);
+            stopInkubasiButton.disabled = false;
+        }
+    }
+
+    async function toggleRackManual() {
+        try {
+            toggleRackButton.disabled = true; // Nonaktifkan tombol sementara
+
+            const res = await fetch("/toggleRack", { method: "POST" });
+            if (!res.ok) throw new Error("Gagal mengirim perintah putar rak.");
+
+            const data = await res.json();
+            alert(data.message || "Perintah putar rak berhasil dikirim.");
+        } catch (err) {
+            alert("Gagal memutar rak: " + err);
+        } finally {
+            toggleRackButton.disabled = false; // Aktifkan kembali tombol setelah respons
+        }
+    }
+
+    
+    function startCountdown(currentDayFromEsp) {
+        if (countdownInterval) clearInterval(countdownInterval); 
+
+        
+        if (!isInkubasiActive || !incubationStartDate) {
+            document.getElementById("countdown").textContent = "-- : -- : -- : --";
+            return;
+        }
+
+        
+        const startTimeMs = incubationStartDate.getTime();
+        
+        
+        const totalIncubationDurationMs = maxDay * 24 * 60 * 60 * 1000;
+
+        
+        const endDateMs = startTimeMs + totalIncubationDurationMs;
+
+        countdownInterval = setInterval(() => {
+            
+            const nowMs = new Date().getTime(); 
+            let timeLeft = endDateMs - nowMs; 
+
+            if (timeLeft < 0) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+                document.getElementById("countdown").textContent = "00 : 00 : 00 : 00";
+                
+                return;
+            }
+
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").textContent =
+                `${String(days).padStart(2, "0")} : ${String(hours).padStart(2, "0")} : ${String(minutes).padStart(2, "0")} : ${String(seconds).padStart(2, "0")}`;
+        }, 1000); 
+    }
+
+        
+        function setMenuActive() {
+        const currentPath = window.location.pathname.split('/').pop();
+        const menuLinks = document.querySelectorAll('.sidebar .menu a');
+
+        menuLinks.forEach(link => {
+            link.classList.remove('active'); 
+            const linkPath = link.getAttribute('href');
+
+            if (linkPath === currentPath) {
+                link.classList.add('active'); 
+            }
+        });
+    }
+
+    
+    document.addEventListener('DOMContentLoaded', setMenuActive);
+
+    
+    updateData();
+    setInterval(updateData, 5000); 
+</script>
+
+</body>
+</html>
